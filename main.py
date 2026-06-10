@@ -61,20 +61,37 @@ def main():
 
     while True:
         display_menu()
-        choice = input("Choose an option: ").strip()
+        try:
+            choice_raw = input("Choose an option: ")
+        except EOFError:
+            break
+        choice = choice_raw.strip()
 
         if not validate_menu_choice(choice):
             print("Please enter a valid option from 0 to 5.")
             continue
 
         if choice == "1":
-            title = input("Enter the task title: ").strip()
+            try:
+                title_raw = input("Enter the task title: ")
+            except EOFError:
+                break
+            title = title_raw.strip()
             if not validate_task_title(title):
                 print("Task title cannot be empty. Please try again.")
                 continue
-            description = input("Enter the task description: ").strip()
-            due_date = input("Enter the due date (YYYY-MM-DD): ").strip()
-            priority = input("Enter priority (1-5): ").strip()
+            try:
+                description = input("Enter the task description: ").strip()
+            except EOFError:
+                description = ""
+            try:
+                due_date = input("Enter the due date (YYYY-MM-DD): ").strip()
+            except EOFError:
+                due_date = None
+            try:
+                priority = input("Enter priority (1-5): ").strip()
+            except EOFError:
+                priority = None
             add_task(tasks, title, description, due_date, priority)
             print("Task added successfully!")
 
@@ -83,13 +100,17 @@ def main():
                 print("No tasks available to mark complete.")
                 continue
             list_tasks(tasks)
-            task_number = input("Enter the number of the task to complete: ").strip()
-            index = validate_task_index(task_number, tasks)
-            if index is None:
+            try:
+                task_number = input("Enter the number of the task to complete: ").strip()
+            except EOFError:
+                break
+            try:
+                index = validate_task_index(task_number, tasks)
+            except ValueError:
                 print("Please enter a valid task number.")
                 continue
             complete_task(tasks, index)
-            print("Task marked as complete")
+            print("Task marked complete.")
 
         elif choice == "3":
             pending = get_pending_tasks(tasks)

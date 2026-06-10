@@ -11,10 +11,10 @@ def validate_menu_choice(choice):
 def validate_task_index(task_number, tasks):
     """Convert a task number to a zero-based index if valid."""
     if not isinstance(task_number, str) or len(task_number.strip()) == 0:
-        return None
+        raise ValueError("Task number must be a non-empty string")
     if not task_number.isdigit():
-        return None
+        raise ValueError("Task number must contain only digits")
     index = int(task_number) - 1
     if 0 <= index < len(tasks):
         return index
-    return None
+    raise ValueError("Task number out of range")
