@@ -1,6 +1,10 @@
 def validate_task_title(title):
     """Return True when the task title is a non-empty string."""
-    return isinstance(title, str) and len(title.strip()) > 0
+    if not isinstance(title, str):
+        return False
+    if len(title.strip()) == 0:
+        return False
+    return True
 
 
 def validate_menu_choice(choice):
