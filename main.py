@@ -1,5 +1,50 @@
-from task_utils import add_task, complete_task, get_pending_tasks, get_progress, list_tasks
-from validation import validate_menu_choice, validate_task_title, validate_task_index
+try:
+    from task_utils import add_task, complete_task, get_pending_tasks, get_progress, list_tasks
+    from validation import validate_menu_choice, validate_task_title, validate_task_index
+except ModuleNotFoundError:
+    # Fallback implementations in case the helper modules aren't available
+    def add_task(tasks, title, description="", due_date=None, priority=None):
+        task = {"title": title.strip(), "description": description.strip() if isinstance(description, str) else description, "due_date": due_date, "priority": priority, "completed": False}
+        tasks.append(task)
+        return task
+
+    def complete_task(tasks, index):
+        if 0 <= index < len(tasks):
+            tasks[index]["completed"] = True
+            return True
+        return False
+
+    def get_pending_tasks(tasks):
+        return [task for task in tasks if not task.get("completed", False)]
+
+    def get_progress(tasks):
+        total = len(tasks)
+        if total == 0:
+            return 0.0
+        completed = sum(1 for task in tasks if task.get("completed", False))
+        return completed / total * 100
+
+    def list_tasks(tasks):
+        print("\nAll tasks:")
+        for index, task in enumerate(tasks, start=1):
+            status = "Done" if task.get("completed", False) else "Pending"
+            print(f"{index}. {task['title']} [{status}]")
+
+    def validate_task_title(title):
+        return isinstance(title, str) and len(title.strip()) > 0
+
+    def validate_menu_choice(choice):
+        return choice in {"0", "1", "2", "3", "4", "5"}
+
+    def validate_task_index(task_number, tasks):
+        if not isinstance(task_number, str) or len(task_number.strip()) == 0:
+            return None
+        if not task_number.isdigit():
+            return None
+        index = int(task_number) - 1
+        if 0 <= index < len(tasks):
+            return index
+        return None
 
 def display_menu():
     print("\nTask Management System")
@@ -27,8 +72,11 @@ def main():
             if not validate_task_title(title):
                 print("Task title cannot be empty. Please try again.")
                 continue
-            add_task(tasks, title)
-            print(f"Task added: '{title}'")
+            description = input("Enter the task description: ").strip()
+            due_date = input("Enter the due date (YYYY-MM-DD): ").strip()
+            priority = input("Enter priority (1-5): ").strip()
+            add_task(tasks, title, description, due_date, priority)
+            print("Task added successfully!")
 
         elif choice == "2":
             if len(tasks) == 0:
@@ -41,7 +89,7 @@ def main():
                 print("Please enter a valid task number.")
                 continue
             complete_task(tasks, index)
-            print("Task marked complete.")
+            print("Task marked as complete")
 
         elif choice == "3":
             pending = get_pending_tasks(tasks)

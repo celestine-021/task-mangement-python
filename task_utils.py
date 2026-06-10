@@ -1,7 +1,10 @@
-def add_task(tasks, title):
-    """Add a new task to the task list."""
+def add_task(tasks, title, description="", due_date=None, priority=None):
+    """Add a new task to the task list with optional fields."""
     task = {
         "title": title.strip(),
+        "description": description.strip() if isinstance(description, str) else description,
+        "due_date": due_date,
+        "priority": priority,
         "completed": False,
     }
     tasks.append(task)
