@@ -88,11 +88,7 @@ def main():
                 due_date = input("Enter the due date (YYYY-MM-DD): ").strip()
             except EOFError:
                 due_date = None
-            try:
-                priority = input("Enter priority (1-5): ").strip()
-            except EOFError:
-                priority = None
-            add_task(tasks, title, description, due_date, priority)
+            add_task(tasks, title, description, due_date)
             print("Task added successfully!")
 
         elif choice == "2":
