@@ -21,6 +21,8 @@ def get_pending_tasks(tasks):
     return [task for task in tasks if not task.get("completed", False)]
 
 
+__all__ = ["add_task", "complete_task", "get_pending_tasks", "calculate_progress", "get_progress", "list_tasks"]
+
 def calculate_progress(tasks):
     total = len(tasks)
     if total == 0:

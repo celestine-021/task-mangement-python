@@ -33,6 +33,10 @@ def get_progress(tasks):
     return completed / total * 100
 
 
+def calculate_progress(tasks):
+    return get_progress(tasks)
+
+
 def list_tasks(tasks):
     """Print all tasks with completion status."""
     print("\nAll tasks:")
