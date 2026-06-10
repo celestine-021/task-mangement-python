@@ -110,7 +110,7 @@ def main():
                 print("Please enter a valid task number.")
                 continue
             complete_task(tasks, index)
-            print("Task marked complete.")
+            print("Task marked as complete!")
 
         elif choice == "3":
             pending = get_pending_tasks(tasks)
